@@ -26,3 +26,17 @@ URL_PLAYER_REGISTRY = 'https://drive.google.com/file/d/1wCSAkGagMzWiToedLC3ZGo_l
 print("=== STARTING THE PIPELINE CHALLENGE ===")
 df_chess = fetch_drive_data(URL_CHESS_GAMES, "data/raw/chess_games.csv")
 df_players = fetch_drive_data(URL_PLAYER_REGISTRY, "data/raw/player_registry.csv")
+
+
+# STAGE 1: PROFILING 
+
+print("\n" + "="*45 + "\n   STAGE 1: CHESS GAMES PROFILING\n" + "="*45)
+print(f"    -> Available Columns in Chess Dataset: {df_chess.columns.tolist()}")
+print(f"Q1: Number of records: {df_chess.shape[0]}")
+print(f"Q2: Exact duplicate rows: {df_chess.duplicated().sum()}")
+print(f"Q3: Games with duplicate move sequences: {df_chess.duplicated(subset=['moves']).sum()}")
+print(f"Q4: Missing opening_response: {df_chess['opening_response'].isnull().mean() * 100:.2f}%")
+print(f"Q5: Missing opening_variation: {df_chess['opening_variation'].isnull().mean() * 100:.2f}%")
+print(f"Q6: Minimum number of turns: {df_chess['turns'].min()}")
+print("    -> Why suspicious? Early forfeits/disconnects create noise (0-1 turns) and ruin analysis.")
+
